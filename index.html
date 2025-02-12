@@ -7,10 +7,27 @@
     <script>
         // 添加路径处理函数
         window.getAssetPath = function(path) {
-            const isProduction = window.location.hostname !== 'localhost' && 
-                               window.location.hostname !== '127.0.0.1';
-            return isProduction ? `/capypress/${path.replace('./', '')}` : path;
+            // 获取当前路径
+            const currentPath = window.location.pathname;
+            // 如果当前路径包含 capypress，说明是部署在子目录
+            if (currentPath.includes('capypress')) {
+                return `/capypress/${path.replace('./', '')}`;
+            }
+            // 否则使用根路径（适用于本地开发和 Vercel）
+            return path;
         }
+
+        // 动态加载资源
+        window.addEventListener('DOMContentLoaded', function() {
+            const resources = document.querySelectorAll('link[href], script[src], img[src]');
+            resources.forEach(element => {
+                const srcAttr = element.hasAttribute('src') ? 'src' : 'href';
+                const originalPath = element.getAttribute(srcAttr);
+                if (originalPath && originalPath.startsWith('./')) {
+                    element.setAttribute(srcAttr, getAssetPath(originalPath));
+                }
+            });
+        });
     </script>
     <link rel="stylesheet" href="./styles.css">
     <link rel="icon" type="image/svg+xml" href="./assets/capybara-icon.svg">
@@ -81,13 +98,5 @@
             <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
         </div>
     </div>
-    <script>
-        // 添加路径处理函数
-        window.getAssetPath = function(path) {
-            const isProduction = window.location.hostname !== 'localhost' && 
-                               window.location.hostname !== '127.0.0.1';
-            return isProduction ? `/capypress/${path.replace('./', '')}` : path;
-        }
-    </script>
 </body>
 </html> 
