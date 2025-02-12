@@ -7,13 +7,11 @@
     <script>
         // 添加路径处理函数
         window.getAssetPath = function(path) {
-            // 获取当前路径
-            const currentPath = window.location.pathname;
-            // 如果当前路径包含 capypress，说明是部署在子目录
-            if (currentPath.includes('capypress')) {
+            // 检查是否是 vansun.top 域名
+            if (window.location.hostname === 'www.vansun.top') {
                 return `/capypress/${path.replace('./', '')}`;
             }
-            // 否则使用根路径（适用于本地开发和 Vercel）
+            // 其他情况（本地开发和 Vercel）使用原始路径
             return path;
         }
         
