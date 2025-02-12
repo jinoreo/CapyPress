@@ -14,23 +14,29 @@
             // 其他情况（本地开发和 Vercel）使用原始路径
             return path;
         }
-        
-        // 立即处理资源路径
+    </script>
+    <!-- 直接使用处理后的路径 -->
+    <script>
+        const cssPath = getAssetPath('./styles.css');
+        const iconPath = getAssetPath('./assets/capybara-icon.svg');
+        const scriptPath = getAssetPath('./script.js');
         document.write(`
-            <link rel="stylesheet" href="${getAssetPath('./styles.css')}">
-            <link rel="icon" type="image/svg+xml" href="${getAssetPath('./assets/capybara-icon.svg')}">
-            <script src="${getAssetPath('./script.js')}" defer><\/script>
+            <link rel="stylesheet" href="${cssPath}">
+            <link rel="icon" type="image/svg+xml" href="${iconPath}">
+            <script src="${scriptPath}" defer><\/script>
         `);
     </script>
 </head>
 <body>
     <div class="container">
         <h1>
-            <img src="./assets/capybara-icon.svg" alt="水豚图标" class="logo">
+            <!-- 直接使用处理后的路径 -->
+            <script>document.write(`<img src="${getAssetPath('./assets/capybara-icon.svg')}" alt="水豚图标" class="logo">`);</script>
             豚压-CapyPress
         </h1>
         <div class="upload-area" id="uploadArea">
-            <img src="./assets/capybara-icon.svg" alt="上传图标">
+            <!-- 直接使用处理后的路径 -->
+            <script>document.write(`<img src="${getAssetPath('./assets/capybara-icon.svg')}" alt="上传图标">`);</script>
             <p>点击或拖拽图片到这里</p>
             <p class="subtitle">让水豚帮你压缩图片吧！</p>
             <input type="file" id="fileInput" accept="image/*" hidden>
