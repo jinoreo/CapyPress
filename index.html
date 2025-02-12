@@ -16,22 +16,14 @@
             // 否则使用根路径（适用于本地开发和 Vercel）
             return path;
         }
-
-        // 动态加载资源
-        window.addEventListener('DOMContentLoaded', function() {
-            const resources = document.querySelectorAll('link[href], script[src], img[src]');
-            resources.forEach(element => {
-                const srcAttr = element.hasAttribute('src') ? 'src' : 'href';
-                const originalPath = element.getAttribute(srcAttr);
-                if (originalPath && originalPath.startsWith('./')) {
-                    element.setAttribute(srcAttr, getAssetPath(originalPath));
-                }
-            });
-        });
+        
+        // 立即处理资源路径
+        document.write(`
+            <link rel="stylesheet" href="${getAssetPath('./styles.css')}">
+            <link rel="icon" type="image/svg+xml" href="${getAssetPath('./assets/capybara-icon.svg')}">
+            <script src="${getAssetPath('./script.js')}" defer><\/script>
+        `);
     </script>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="icon" type="image/svg+xml" href="./assets/capybara-icon.svg">
-    <script src="./script.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -98,5 +90,15 @@
             <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
         </div>
     </div>
+    <script>
+        // 处理图片资源路径
+        window.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('img[src]').forEach(img => {
+                if (img.getAttribute('src').startsWith('./')) {
+                    img.src = getAssetPath(img.getAttribute('src'));
+                }
+            });
+        });
+    </script>
 </body>
 </html> 
