@@ -106,6 +106,7 @@ h1 .logo {
 }
 
 .preview-box {
+    position: relative;
     flex: 1;
     background: white;
     padding: 20px;
@@ -117,15 +118,40 @@ h1 .logo {
     margin-bottom: 16px;
 }
 
+.loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #CD853F;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 .preview-box img {
     max-width: 100%;
     border-radius: 8px;
+    transition: opacity 0.3s ease;
 }
 
 .image-info {
-    margin-top: 12px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     font-size: 14px;
-    color: #86868B;
+    color: #333;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .controls {
@@ -141,10 +167,98 @@ h1 .logo {
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
+    position: relative;
 }
 
+/* 进度条基础样式 */
 .quality-control input[type="range"] {
-    flex: 1;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 6px;
+    background: #f5f5f7;
+    border-radius: 3px;
+    outline: none;
+    position: relative;
+}
+
+/* 进度条填充部分 */
+.quality-control input[type="range"] {
+    background: linear-gradient(to right, 
+        #CD853F 0%, 
+        #CD853F var(--progress-width, 80%), 
+        #f5f5f7 var(--progress-width, 80%), 
+        #f5f5f7 100%
+    );
+}
+
+/* 低质量时的进度条颜色 */
+.quality-control input[type="range"].low-quality {
+    background: linear-gradient(to right, 
+        #8B4513 0%, 
+        #8B4513 var(--progress-width, 30%), 
+        #f5f5f7 var(--progress-width, 30%), 
+        #f5f5f7 100%
+    );
+}
+
+/* 30%标记线和提醒 */
+.quality-control::after {
+    content: '';
+    position: absolute;
+    left: calc(30% + 12px);
+    top: 50%;
+    width: 2px;
+    height: 12px;
+    background: #CD853F;
+    transform: translateY(-50%);
+}
+
+/* 滑块样式 */
+.quality-control input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #CD853F;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 低质量时的滑块颜色 */
+.quality-control input[type="range"].low-quality::-webkit-slider-thumb {
+    background: #8B4513;
+}
+
+/* 30%标记文字 */
+.quality-control::before {
+    content: '30%';
+    position: absolute;
+    left: calc(30% + 12px);
+    top: -15px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #CD853F;
+}
+
+/* 质量提醒文案 */
+.quality-warning {
+    position: absolute;
+    left: calc(30% + 12px);
+    bottom: -25px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #8B4513;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.quality-warning.show {
+    opacity: 1;
 }
 
 .download-btn {
@@ -160,4 +274,60 @@ h1 .logo {
 
 .download-btn:hover {
     background: #B8773F;
+}
+
+.control-group {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f5f5f7;
+    border-radius: 8px;
+}
+
+.format-control, .size-control {
+    margin-top: 10px;
+}
+
+.format-control select, .max-size-control input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 8px;
+}
+
+.compression-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.info-item {
+    padding: 8px;
+    background: #f5f5f7;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.max-size-control {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.quality-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#quality {
+    flex: 1;
+}
+
+.info-size, .info-dimensions {
+    display: block;
+    margin: 2px 0;
 } 

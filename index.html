@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <base href="/capypress/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>豚压-CapyPress | 图片压缩工具</title>
-    <link rel="stylesheet" href="/capypress/styles.css">
-    <link rel="icon" type="image/svg+xml" href="/capypress/assets/capybara-icon.svg">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" type="image/svg+xml" href="./assets/capybara-icon.svg">
 </head>
 <body>
     <div class="container">
         <h1>
-            <img src="/capypress/assets/capybara-icon.svg" alt="水豚图标" class="logo">
+            <img src="./assets/capybara-icon.svg" alt="水豚图标" class="logo">
             豚压-CapyPress
         </h1>
         <div class="upload-area" id="uploadArea">
-            <img src="/capypress/assets/capybara-icon.svg" alt="上传图标">
+            <img src="./assets/capybara-icon.svg" alt="上传图标">
             <p>点击或拖拽图片到这里</p>
             <p class="subtitle">让水豚帮你压缩图片吧！</p>
             <input type="file" id="fileInput" accept="image/*" hidden>
@@ -25,24 +24,62 @@
             <div class="preview-box">
                 <h3>原图</h3>
                 <img id="originalImage" alt="原图预览">
-                <div class="image-info" id="originalInfo"></div>
+                <div class="image-info" id="originalInfo">
+                    <span class="info-size"></span>
+                    <span class="info-dimensions"></span>
+                </div>
             </div>
             <div class="preview-box">
                 <h3>压缩后</h3>
                 <img id="compressedImage" alt="压缩后预览">
-                <div class="image-info" id="compressedInfo"></div>
+                <div class="image-info" id="compressedInfo">
+                    <span class="info-size"></span>
+                    <span class="info-dimensions"></span>
+                </div>
             </div>
         </div>
         
         <div class="controls" id="controls" style="display: none;">
-            <div class="quality-control">
-                <label for="quality">压缩质量：</label>
-                <input type="range" id="quality" min="0" max="100" value="80">
-                <span id="qualityValue">80%</span>
+            <div class="control-group">
+                <div class="quality-control">
+                    <label for="quality">压缩质量：</label>
+                    <input type="range" id="quality" min="0" max="100" value="80">
+                    <span id="qualityValue">80%</span>
+                </div>
+                <div class="format-control">
+                    <label for="format">输出格式：</label>
+                    <select id="format">
+                        <option value="auto">自动选择</option>
+                        <option value="jpeg">JPEG</option>
+                        <option value="webp">WebP</option>
+                        <option value="png">PNG</option>
+                    </select>
+                </div>
             </div>
+            <div class="control-group">
+                <div class="size-control">
+                    <label>
+                        <input type="checkbox" id="maintainSize" checked>
+                        保持原始尺寸
+                    </label>
+                    <div class="max-size-control" style="display: none;">
+                        <label for="maxWidth">最大宽度：</label>
+                        <input type="number" id="maxWidth" value="2048" min="100" max="4096">px
+                    </div>
+                </div>
+            </div>
+            <div class="compression-info" id="compressionInfo"></div>
             <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script>
+        // 添加路径处理函数
+        window.getAssetPath = function(path) {
+            const isProduction = window.location.hostname !== 'localhost' && 
+                               window.location.hostname !== '127.0.0.1';
+            return isProduction ? `/capypress/${path}` : path;
+        }
+    </script>
+    <script src="./script.js"></script>
 </body>
 </html> 

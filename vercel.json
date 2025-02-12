@@ -1,0 +1,24 @@
+{
+    "rewrites": [
+      {
+        "source": "/capypress",
+        "destination": "https://capy-press.vercel.app"
+      },
+      {
+        "source": "/capypress/:path*",
+        "destination": "https://capy-press.vercel.app/:path*"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/capypress/(.*)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }
+        ]
+      }
+    ],
+    "trailingSlash": false
+} 
