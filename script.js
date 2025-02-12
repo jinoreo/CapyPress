@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 compressImage();
                 previewContainer.style.display = 'flex';
                 controls.style.display = 'block';
+                uploadArea.classList.add('compact');
             };
         };
         reader.readAsDataURL(file);
